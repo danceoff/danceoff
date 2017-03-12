@@ -44,7 +44,7 @@ function readyDancer() {
   });
   xhr.send(data);
 }
-}
+
 
 
 function onPlayerReady(event) {
