@@ -21,7 +21,7 @@ var count = 0;
           height: '100',
           width: '500',
           videoId: currentSong,
-          playerVars: { 'start': 40, 'end': 80},
+          playerVars: { 'start': 40, 'end': 55},
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
