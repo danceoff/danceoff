@@ -11,7 +11,7 @@ var count = 0;
       // 3. This function creates an <iframe> (and YouTube player)
       //    after the API code downloads.
 
-    var currentSong = songIds[Math.floor(Math.random() * 6).toString()];
+    var currentSong = "HdzI-191xhU";
 
     console.log("THIS CURRENT SONG ID:",currentSong)
 
@@ -29,66 +29,70 @@ var count = 0;
         });
       }
 
+function readyDancer() {
+  count++;
+  xhr.open('POST',"/ready", true);
+  xhr.setRequestHeader("Content-type", "application/json");
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var json = JSON.parse(xhr.responseText);
+      console.log(json)
+    }
+  }
+  var data = JSON.stringify({
+    dancerCount: parseInt(count)
+  });
+  xhr.send(data);
+}
+}
+
+
 function onPlayerReady(event) {
 
-	var check = setInterval(function(){ 
-	if(count === 2) {
-	  displayCountDown();
-	  event.target.playVideo();
-	  clearInterval(check);
-	  
-	  } else {
-	  	console.log("Waiting for other dancer");
-	  }
-	}, 5000);
+    var check = setInterval(function(){
+    if(count === 2) {
+      // displayCountDown();
+      event.target.playVideo();
+      clearInterval(check);
+
+      } else {
+          console.log("Waiting for other dancer");
+      }
+    }, 5000);
   check();
 
 }
 
+
 function displayCountDown() {
 
-	var index = 0;
+    var index = 0;
 
-	var countdown = setInterval(function(){
+    var countdown = setInterval(function(){
 
-	 if(index > 4) {
+     if(index > 4) {
 
-	 	clearInterval(countdown);
+         clearInterval(countdown);
 
-	 } else {
+     } else {
 
-		document.createElement('img');
-		countdown.src = "../assets/"+index+".png"
+        document.createElement('img');
+        countdown.src = "../assets/"+index+".png"
 
-		countdown.innerHtml(numbers);
+        countdown.innerHtml(numbers);
 
-		index++
-	 }
+        index++
+     }
 
   },1000)
 }
 
 function onPlayerStateChange() {
-	if (event.data === 0) {          
+    if (event.data === 0) {
           $('#player').fadeOut();
       }
   }
 
-session.signal(
-  {
-    data:"Dancers are ready!",
-    type:"ready"
-  },
-  function(error) {
-    if (error) {
-      console.log("signal error ("
-                   + error.name
-                   + "): " + error.message);
-    } else {
-      console.log("Dancers ready!");
-    }
-  }
-);
 
 session.on('connectionCreated', function(event) {
    count++
